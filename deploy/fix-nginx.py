@@ -1,4 +1,12 @@
-server {
+import subprocess
+
+def run(cmd):
+    r = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    print(r.stdout.strip())
+    if r.stderr.strip(): print("ERR:", r.stderr.strip())
+
+# Nginx config: ambos puertos proxy directo al app (Cloudflare maneja SSL)
+conf = """server {
     listen 80;
     server_name tribu.centralchat.pro;
     client_max_body_size 20M;
@@ -34,3 +42,16 @@ server {
         proxy_read_timeout 86400;
     }
 }
+"""
+with open('/etc/nginx/sites-available/tribu', 'w') as f:
+    f.write(conf)
+print("Config escrita")
+
+run("nginx -t 2>&1")
+run("systemctl reload nginx")
+print("Nginx recargado")
+
+run("curl -s http://127.0.0.1:3803/ -o /dev/null -w 'Puerto 3803: HTTP %{http_code}'")
+run("curl -sk --resolve tribu.centralchat.pro:80:127.0.0.1 http://tribu.centralchat.pro/ -o /dev/null -w 'Puerto 80: HTTP %{http_code}'")
+run("curl -sk --resolve tribu.centralchat.pro:443:127.0.0.1 https://tribu.centralchat.pro/ -o /dev/null -w 'Puerto 443: HTTP %{http_code}'")
+print("Listo!")
