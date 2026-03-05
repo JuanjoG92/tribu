@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title data-i18n-title="modal_title">Compartir Conocimiento · Tribu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="/css/app.css"/>
+</head>
+<body>
+
+  <nav class="nav nav-solid" id="mainNav">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <i class="fas fa-seedling"></i>
+        <span>Tribu <span class="logo-sub" data-i18n="nav_brand_sub">Comunidad</span></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="/" data-i18n="nav_home">Inicio</a>
+        <a href="/login" class="btn btn-outline btn-sm" id="navLoginBtn" data-i18n="nav_login">Ingresar</a>
+        <a href="/login" class="btn btn-outline btn-sm" id="navLogoutBtn" style="display:none" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+        </a>
+        <div class="lang-selector">
+          <button class="lang-btn" onclick="toggleLangMenu()"><i class="fas fa-globe"></i> <span id="currentLang">ES</span></button>
+          <div class="lang-menu" id="langMenu">
+            <a onclick="setLang('es')">🇦🇷 Español</a><a onclick="setLang('en')">🇺🇸 English</a>
+            <a onclick="setLang('pt')">🇧🇷 Português</a><a onclick="setLang('de')">🇩🇪 Deutsch</a>
+            <a onclick="setLang('fr')">🇫🇷 Français</a><a onclick="setLang('it')">🇮🇹 Italiano</a>
+            <a onclick="setLang('nl')">🇳🇱 Nederlands</a><a onclick="setLang('ru')">🇷🇺 Русский</a>
+            <a onclick="setLang('ja')">🇯🇵 日本語</a><a onclick="setLang('pl')">🇵🇱 Polski</a>
+            <a onclick="setLang('uk')">🇺🇦 Українська</a><a onclick="setLang('sv')">🇸🇪 Svenska</a>
+            <a onclick="setLang('no')">🇳🇴 Norsk</a><a onclick="setLang('zh')">🇹🇼 繁體中文</a>
+            <a onclick="setLang('fi')">🇫🇮 Suomi</a><a onclick="setLang('af')">🇿🇦 Afrikaans</a>
+          </div>
+        </div>
+      </div>
+      <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+
+  <div style="min-height:100vh;padding:100px 20px 60px;background:var(--bg)">
+    <div class="container" style="max-width:680px">
+
+      <!-- Terms step -->
+      <div id="termsStep" class="auth-card" style="margin-bottom:24px">
+        <div class="terms-step">
+          <div class="tc-icon"><i class="fas fa-handshake fa-2x"></i></div>
+          <h4 data-i18n="terms_title">Acuerdo de Comunidad</h4>
+          <p data-i18n="terms_text">Al publicar en esta comunidad acepto compartir de buena fe, sin lenguaje ofensivo, sin violencia, respetando a todos los pueblos y tradiciones del mundo.</p>
+          <label class="tc-checkbox">
+            <input type="checkbox" id="termsCheck" onchange="checkTerms()"/>
+            <span data-i18n="terms_accept">Acepto los valores de la comunidad Merrali y publicaré de buena fe.</span>
+          </label>
+          <button class="btn btn-primary btn-block" id="termsNextBtn" disabled onclick="showForm()" data-i18n="terms_continue">Continuar</button>
+        </div>
+      </div>
+
+      <!-- Upload form -->
+      <div id="uploadCard" class="auth-card" style="display:none">
+        <h3 style="font-family:'Playfair Display',serif;color:var(--green-dark);margin-bottom:24px">
+          <i class="fas fa-leaf"></i> <span data-i18n="modal_title">Compartir Conocimiento</span>
+        </h3>
+        <div id="uploadMsg" class="upload-msg" style="display:none"></div>
+        <form id="uploadForm" onsubmit="submitPost(event)" enctype="multipart/form-data">
+          <div class="form-group">
+            <label data-i18n="form_cat">Categoría *</label>
+            <select id="fCat" required>
+              <option value="">— seleccioná —</option>
+              <option value="farming" data-i18n="cat_farming">Agricultura</option>
+              <option value="gardening" data-i18n="cat_gardening">Jardinería</option>
+              <option value="preservation" data-i18n="cat_preservation">Conservación</option>
+              <option value="building" data-i18n="cat_building">Construcción</option>
+              <option value="hunting" data-i18n="cat_hunting">Caza & Pesca</option>
+              <option value="tools" data-i18n="cat_tools">Herramientas</option>
+              <option value="survival" data-i18n="cat_survival">Supervivencia</option>
+              <option value="adventures" data-i18n="cat_adventures">Aventuras</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label data-i18n="form_title">Título *</label>
+            <input type="text" id="fTitle" required maxlength="120" data-i18n-ph="form_title_ph" placeholder="Ej: Cómo ahumar carne sin refrigeración"/>
+          </div>
+          <div class="form-group">
+            <label data-i18n="form_body">Descripción / Consejos *</label>
+            <textarea id="fBody" required rows="7" maxlength="3000" data-i18n-ph="form_body_ph" placeholder="Compartí tu conocimiento, paso a paso..." oninput="updateCount()"></textarea>
+            <div class="char-count"><span id="bodyCount">0</span>/3000</div>
+          </div>
+          <div class="form-group">
+            <label data-i18n="form_video">URL de Video (YouTube/Vimeo) <small data-i18n="form_optional">— Opcional</small></label>
+            <input type="url" id="fVideo" data-i18n-ph="form_video_ph" placeholder="https://youtube.com/..."/>
+            <small data-i18n="form_video_note">El video debe tener descripción escrita para ser traducido.</small>
+          </div>
+          <div class="form-group">
+            <label data-i18n="form_photo">Foto <small data-i18n="form_optional">— Opcional</small></label>
+            <div class="file-drop" id="fileDrop" onclick="document.getElementById('fPhoto').click()">
+              <i class="fas fa-image"></i>
+              <span data-i18n="form_drop">Clic para seleccionar imagen (máx 8MB)</span>
+            </div>
+            <input type="file" id="fPhoto" name="photo" accept="image/*" style="display:none" onchange="previewPhoto(this)"/>
+            <img id="photoPreview" style="display:none;max-width:100%;border-radius:8px;margin-top:10px;max-height:220px;object-fit:cover"/>
+          </div>
+          <div class="form-group">
+            <label data-i18n="form_lang">Idioma del contenido</label>
+            <select id="fLang" name="lang">
+              <option value="es">🇦🇷 Español</option>
+              <option value="en">🇺🇸 English</option>
+              <option value="pt">🇧🇷 Português</option>
+              <option value="de">🇩🇪 Deutsch</option>
+              <option value="fr">🇫🇷 Français</option>
+              <option value="it">🇮🇹 Italiano</option>
+              <option value="nl">🇳🇱 Nederlands</option>
+              <option value="ru">🇷🇺 Русский</option>
+              <option value="ja">🇯🇵 日本語</option>
+              <option value="pl">🇵🇱 Polski</option>
+              <option value="uk">🇺🇦 Українська</option>
+              <option value="sv">🇸🇪 Svenska</option>
+              <option value="no">🇳🇴 Norsk</option>
+              <option value="zh">🇹🇼 繁體中文</option>
+              <option value="fi">🇫🇮 Suomi</option>
+              <option value="af">🇿🇦 Afrikaans</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <a href="/" class="btn btn-outline" data-i18n="btn_cancel">Cancelar</a>
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+              <i class="fas fa-paper-plane"></i> <span data-i18n="btn_publish">Publicar</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/new-post.js"></script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title data-i18n-title="page_title">Agricultura Comunitaria · Vida Tribal · Merrali</title>
+  <meta name="description" content="Comparte y aprende sobre agricultura comunitaria, vida tribal, conservación, construcción natural. Comunidad global Merrali — 16 idiomas."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="/css/app.css"/>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="mainNav">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <i class="fas fa-seedling"></i>
+        <span>Tribu <span class="logo-sub" data-i18n="nav_brand_sub">Comunidad</span></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="/" class="active" data-i18n="nav_home">Inicio</a>
+        <a href="/new-post" class="btn btn-amber btn-sm" data-i18n="btn_share">Compartir</a>
+        <a href="/login" class="btn btn-primary btn-sm" id="navLoginBtn" data-i18n="nav_login">Ingresar</a>
+        <a href="/login" class="btn btn-outline btn-sm" id="navLogoutBtn" style="display:none" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+        </a>
+        <div class="lang-selector">
+          <button class="lang-btn" onclick="toggleLangMenu()">
+            <i class="fas fa-globe"></i> <span id="currentLang">ES</span>
+          </button>
+          <div class="lang-menu" id="langMenu">
+            <a onclick="setLang('es')">🇦🇷 Español</a>
+            <a onclick="setLang('en')">🇺🇸 English</a>
+            <a onclick="setLang('pt')">🇧🇷 Português</a>
+            <a onclick="setLang('de')">🇩🇪 Deutsch</a>
+            <a onclick="setLang('fr')">🇫🇷 Français</a>
+            <a onclick="setLang('it')">🇮🇹 Italiano</a>
+            <a onclick="setLang('nl')">🇳🇱 Nederlands</a>
+            <a onclick="setLang('ru')">🇷🇺 Русский</a>
+            <a onclick="setLang('ja')">🇯🇵 日本語</a>
+            <a onclick="setLang('pl')">🇵🇱 Polski</a>
+            <a onclick="setLang('uk')">🇺🇦 Українська</a>
+            <a onclick="setLang('sv')">🇸🇪 Svenska</a>
+            <a onclick="setLang('no')">🇳🇴 Norsk</a>
+            <a onclick="setLang('zh')">🇹🇼 繁體中文</a>
+            <a onclick="setLang('fi')">🇫🇮 Suomi</a>
+            <a onclick="setLang('af')">🇿🇦 Afrikaans</a>
+          </div>
+        </div>
+      </div>
+      <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge"><i class="fas fa-leaf"></i> <span data-i18n="hero_badge">Comunidad Global · Buena Fe · Valores Ancestrales</span></div>
+      <h1 class="hero-title">
+        <span data-i18n="hero_title1">Agricultura Comunitaria</span><br>
+        <span class="hero-title-em" data-i18n="hero_title2">Vida Tribal · Merrali</span>
+      </h1>
+      <p class="hero-sub" data-i18n="hero_sub">Un espacio donde todos los pueblos del mundo comparten sabiduría ancestral: agricultura, construcción natural, conservación y tradiciones para las próximas generaciones.</p>
+      <div class="hero-actions">
+        <a href="#posts" class="btn btn-primary btn-lg"><i class="fas fa-book-open"></i> <span data-i18n="hero_cta1">Explorar Contenido</span></a>
+        <a href="/new-post" class="btn btn-white btn-lg"><i class="fas fa-plus-circle"></i> <span data-i18n="hero_cta2">Compartir Conocimiento</span></a>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><i class="fas fa-users"></i><span id="statUsers">0</span><small data-i18n="stat_members">Miembros</small></div>
+        <div class="hstat"><i class="fas fa-file-alt"></i><span id="statPosts">0</span><small data-i18n="stat_posts">Publicaciones</small></div>
+        <div class="hstat"><i class="fas fa-globe"></i><span>16</span><small data-i18n="stat_langs">Idiomas</small></div>
+        <div class="hstat"><i class="fas fa-earth-americas"></i><span>50+</span><small data-i18n="stat_countries">Países</small></div>
+      </div>
+    </div>
+    <div class="scroll-indicator"><i class="fas fa-chevron-down"></i></div>
+  </section>
+
+  <!-- POSTS SECTION -->
+  <section class="cat-section" id="posts">
+    <div class="container">
+      <h2 class="section-title" data-i18n="cat_title">Categorías de Conocimiento</h2>
+      <p class="section-sub" data-i18n="cat_sub">Seleccioná un tema para explorar la sabiduría compartida por nuestra comunidad global.</p>
+      <div class="cat-tabs">
+        <button class="cat-tab active" data-cat="all" onclick="filterCat('all',this)"><i class="fas fa-th"></i> <span data-i18n="cat_all">Todo</span></button>
+        <button class="cat-tab" data-cat="farming" onclick="filterCat('farming',this)"><i class="fas fa-tractor"></i> <span data-i18n="cat_farming">Agricultura</span></button>
+        <button class="cat-tab" data-cat="gardening" onclick="filterCat('gardening',this)"><i class="fas fa-seedling"></i> <span data-i18n="cat_gardening">Jardinería</span></button>
+        <button class="cat-tab" data-cat="preservation" onclick="filterCat('preservation',this)"><i class="fas fa-jar"></i> <span data-i18n="cat_preservation">Conservación</span></button>
+        <button class="cat-tab" data-cat="building" onclick="filterCat('building',this)"><i class="fas fa-house"></i> <span data-i18n="cat_building">Construcción</span></button>
+        <button class="cat-tab" data-cat="hunting" onclick="filterCat('hunting',this)"><i class="fas fa-fish"></i> <span data-i18n="cat_hunting">Caza & Pesca</span></button>
+        <button class="cat-tab" data-cat="tools" onclick="filterCat('tools',this)"><i class="fas fa-hammer"></i> <span data-i18n="cat_tools">Herramientas</span></button>
+        <button class="cat-tab" data-cat="survival" onclick="filterCat('survival',this)"><i class="fas fa-fire"></i> <span data-i18n="cat_survival">Supervivencia</span></button>
+        <button class="cat-tab" data-cat="adventures" onclick="filterCat('adventures',this)"><i class="fas fa-mountain"></i> <span data-i18n="cat_adventures">Aventuras</span></button>
+      </div>
+      <div class="comm-search">
+        <div class="csb-wrap">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" data-i18n-ph="search_ph" placeholder="Buscar en la comunidad..." oninput="debounceSearch()"/>
+        </div>
+        <a href="/new-post" class="btn btn-primary"><i class="fas fa-plus"></i> <span data-i18n="btn_share">Compartir</span></a>
+      </div>
+      <div class="posts-grid" id="postsGrid">
+        <div class="posts-loading" id="postsLoading"><i class="fas fa-spinner fa-spin"></i> <span data-i18n="loading">Cargando...</span></div>
+      </div>
+      <div class="posts-empty" id="postsEmpty" style="display:none">
+        <i class="fas fa-seedling fa-3x"></i>
+        <h3 data-i18n="empty_title">¡Sé el primero en compartir!</h3>
+        <p data-i18n="empty_sub">No hay publicaciones en esta categoría aún.</p>
+        <a href="/new-post" class="btn btn-primary" data-i18n="btn_share_first">Compartir ahora</a>
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES INFO -->
+  <section class="catinfo-section">
+    <div class="container">
+      <h2 class="section-title" data-i18n="catinfo_title">¿Qué podés compartir?</h2>
+      <div class="catinfo-grid">
+        <div class="ci-card"><div class="ci-icon" style="background:#d1fae5"><i class="fas fa-tractor"></i></div><h4 data-i18n="ci_farming">Agricultura</h4><p data-i18n="ci_farming_desc">Brasil, India, China, África, Rusia — Métodos comunitarios de cultivo.</p></div>
+        <div class="ci-card"><div class="ci-icon" style="background:#dcfce7"><i class="fas fa-seedling"></i></div><h4 data-i18n="ci_gardening">Jardinería</h4><p data-i18n="ci_gardening_desc">Plantas perennes, bosques frutales, ovejas, ganado, árboles frutales, tubérculos.</p></div>
+        <div class="ci-card"><div class="ci-icon" style="background:#fef3c7"><i class="fas fa-jar"></i></div><h4 data-i18n="ci_preservation">Conservación</h4><p data-i18n="ci_preservation_desc">Enlatado, ahumado de carne, root cellars, métodos ancestrales.</p></div>
+        <div class="ci-card"><div class="ci-icon" style="background:#dbeafe"><i class="fas fa-house"></i></div><h4 data-i18n="ci_building">Construcción Natural</h4><p data-i18n="ci_building_desc">Casas de barro, paja, piedra, madera. Pozos y cisternas naturales.</p></div>
+        <div class="ci-card"><div class="ci-icon" style="background:#d1fae5"><i class="fas fa-fish"></i></div><h4 data-i18n="ci_hunting">Caza & Pesca</h4><p data-i18n="ci_hunting_desc">Técnicas tradicionales de pesca, trampas, arcos y flechas.</p></div>
+        <div class="ci-card"><div class="ci-icon" style="background:#ede9fe"><i class="fas fa-hammer"></i></div><h4 data-i18n="ci_tools">Herramientas Tradicionales</h4><p data-i18n="ci_tools_desc">Fabricación de arcos, herramientas de piedra y madera.</p></div>
+        <div class="ci-card"><div class="ci-icon" style="background:#fff7ed"><i class="fas fa-fire"></i></div><h4 data-i18n="ci_survival">Supervivencia</h4><p data-i18n="ci_survival_desc">Fuego, agua, refugio y primeros auxilios naturales.</p></div>
+        <div class="ci-card"><div class="ci-icon" style="background:#fef9c3"><i class="fas fa-mountain"></i></div><h4 data-i18n="ci_adventures">Aventuras Tribales</h4><p data-i18n="ci_adventures_desc">Expediciones, vida en la naturaleza, tradiciones Amish, Menonitas, tribus indígenas.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SISTER SITES -->
+  <section class="sister-section">
+    <div class="container">
+      <h2 class="section-title" data-i18n="sister_title">Nuestra Red de Sitios</h2>
+      <p class="section-sub" data-i18n="sister_sub">Conectamos comunidades en todo el mundo.</p>
+      <div class="sister-grid">
+        <a href="https://merrali.centralchat.pro" target="_blank" rel="noopener" class="sister-card">
+          <div class="sc-icon"><i class="fas fa-store"></i></div>
+          <div class="sc-info"><strong>Merrali</strong><span data-i18n="sister_merrali">Importación y exportación de productos</span></div>
+          <i class="fas fa-arrow-right sc-arrow"></i>
+        </a>
+        <a href="https://campolatam.centralchat.pro" target="_blank" rel="noopener" class="sister-card">
+          <div class="sc-icon"><i class="fas fa-map"></i></div>
+          <div class="sc-info"><strong>Merrali Campo Latam</strong><span data-i18n="sister_campo">Campos y granjas de Sudamérica</span></div>
+          <i class="fas fa-arrow-right sc-arrow"></i>
+        </a>
+        <a href="#" class="sister-card sc-coming">
+          <div class="sc-icon"><i class="fas fa-video"></i></div>
+          <div class="sc-info"><strong>Yeshua Cristiano</strong><span data-i18n="sister_yeshua">Creador de videos · Próximamente</span></div>
+          <span class="sc-badge" data-i18n="coming_soon">Próximamente</span>
+        </a>
+        <a href="#" class="sister-card sc-coming">
+          <div class="sc-icon"><i class="fas fa-tools"></i></div>
+          <div class="sc-info"><strong>Cangmakers</strong><span data-i18n="sister_cang">Fabricación y artesanías · Próximamente</span></div>
+          <span class="sc-badge" data-i18n="coming_soon">Próximamente</span>
+        </a>
+        <a href="#" class="sister-card sc-coming">
+          <div class="sc-icon"><i class="fas fa-wheat-awn"></i></div>
+          <div class="sc-info"><strong>Granjas Merrali</strong><span data-i18n="sister_granjas">Granjas comunitarias · Próximamente</span></div>
+          <span class="sc-badge" data-i18n="coming_soon">Próximamente</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- DISCLAIMER -->
+  <section class="disclaimer-section">
+    <div class="container">
+      <div class="disc-card">
+        <div class="disc-icon"><i class="fas fa-balance-scale"></i></div>
+        <div class="disc-content">
+          <h3 data-i18n="disc_title">Valores de la Comunidad · Descargo Legal</h3>
+          <ul class="disc-list">
+            <li><i class="fas fa-check-circle"></i><span data-i18n="disc_1">Comunidad de buena fe: cristiana, secular y de todas las tradiciones del mundo.</span></li>
+            <li><i class="fas fa-check-circle"></i><span data-i18n="disc_2">No se permite lenguaje grosero, violencia, contenido de mal gusto ni ataques a otros.</span></li>
+            <li><i class="fas fa-check-circle"></i><span data-i18n="disc_3">Basado en valores bíblicos hebreos y principios seculares de respeto mutuo.</span></li>
+            <li><i class="fas fa-check-circle"></i><span data-i18n="disc_4">Los vídeos deben incluir descripción escrita para permitir la traducción automática.</span></li>
+            <li><i class="fas fa-check-circle"></i><span data-i18n="disc_5">Merrali no se responsabiliza por el contenido publicado por usuarios.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="sf-inner">
+        <div class="sf-brand"><i class="fas fa-seedling"></i><span>Tribu · Merrali · Agricultura Comunitaria</span></div>
+        <p data-i18n="footer_love">Hecho con amor por y para las comunidades del mundo 🌍</p>
+        <div class="sf-links">
+          <a href="/">Inicio</a>
+          <a href="/new-post" data-i18n="btn_share">Compartir</a>
+          <a href="/login" data-i18n="nav_login">Ingresar</a>
+          <a href="/register" data-i18n="nav_register">Registrarse</a>
+          <a href="https://merrali.centralchat.pro" target="_blank">Merrali</a>
+          <a href="https://campolatam.centralchat.pro" target="_blank">Campo Latam</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- POST DETAIL MODAL -->
+  <div class="modal-overlay" id="postModal" onclick="closePostModal(event)">
+    <div class="modal-box wide" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <span id="pdCatBadge"></span>
+        <button class="modal-close" onclick="closePostModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body" id="postDetailBody"></div>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/index.js"></script>
+</body>
+</html>

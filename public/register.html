@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title data-i18n-title="register_title">Registrarse · Tribu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="/css/app.css"/>
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <i class="fas fa-seedling"></i>
+        <h2 data-i18n="register_title">Unirse a Tribu</h2>
+        <p data-i18n="register_sub">Creá tu cuenta y empezá a compartir</p>
+      </div>
+      <div id="authMsg" class="upload-msg" style="display:none"></div>
+      <form onsubmit="doRegister(event)">
+        <div class="form-group">
+          <label data-i18n="name_label">Tu nombre</label>
+          <input type="text" id="rName" required autocomplete="name" data-i18n-ph="name_label" placeholder="Tu nombre"/>
+        </div>
+        <div class="form-group">
+          <label data-i18n="email_label">Email</label>
+          <input type="email" id="rEmail" required autocomplete="email" placeholder="tu@email.com"/>
+        </div>
+        <div class="form-group">
+          <label data-i18n="pass_label">Contraseña</label>
+          <input type="password" id="rPass" required autocomplete="new-password" placeholder="••••••"/>
+        </div>
+        <div class="form-group">
+          <label data-i18n="country_label">País (opcional)</label>
+          <input type="text" id="rCountry" data-i18n-ph="country_label" placeholder="País (opcional)" autocomplete="country"/>
+        </div>
+        <div class="form-group">
+          <label class="tc-checkbox">
+            <input type="checkbox" id="rTerms" required/>
+            <span data-i18n="terms_accept">Acepto los valores de la comunidad Merrali y publicaré de buena fe.</span>
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="submitBtn">
+          <i class="fas fa-user-plus"></i> <span data-i18n="btn_register">Crear cuenta</span>
+        </button>
+      </form>
+      <div class="auth-footer">
+        <span data-i18n="have_account">¿Ya tenés cuenta?</span>
+        <a href="/login" data-i18n="login_here">Iniciá sesión</a>
+      </div>
+      <div style="text-align:center;margin-top:14px">
+        <div class="lang-selector" style="display:inline-block">
+          <button class="lang-btn" onclick="toggleLangMenu()" style="border-color:var(--border);color:var(--text)">
+            <i class="fas fa-globe"></i> <span id="currentLang">ES</span>
+          </button>
+          <div class="lang-menu" id="langMenu">
+            <a onclick="setLang('es')">🇦🇷 Español</a><a onclick="setLang('en')">🇺🇸 English</a>
+            <a onclick="setLang('pt')">🇧🇷 Português</a><a onclick="setLang('de')">🇩🇪 Deutsch</a>
+            <a onclick="setLang('fr')">🇫🇷 Français</a><a onclick="setLang('it')">🇮🇹 Italiano</a>
+            <a onclick="setLang('nl')">🇳🇱 Nederlands</a><a onclick="setLang('ru')">🇷🇺 Русский</a>
+            <a onclick="setLang('ja')">🇯🇵 日本語</a><a onclick="setLang('pl')">🇵🇱 Polski</a>
+            <a onclick="setLang('uk')">🇺🇦 Українська</a><a onclick="setLang('sv')">🇸🇪 Svenska</a>
+            <a onclick="setLang('no')">🇳🇴 Norsk</a><a onclick="setLang('zh')">🇹🇼 繁體中文</a>
+            <a onclick="setLang('fi')">🇫🇮 Suomi</a><a onclick="setLang('af')">🇿🇦 Afrikaans</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/js/app.js"></script>
+  <script>
+    if (isLoggedIn()) window.location = '/';
+    async function doRegister(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const msg = document.getElementById('authMsg');
+      const name = document.getElementById('rName').value.trim();
+      const email = document.getElementById('rEmail').value.trim();
+      const password = document.getElementById('rPass').value;
+      const country = document.getElementById('rCountry').value.trim();
+      if (!name || !email || !password) { showMsg(t('error_required'), 'error'); return; }
+      if (password.length < 6) { showMsg(t('error_pass_short'), 'error'); return; }
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      try {
+        const data = await api('POST', '/auth/register', { name, email, password, country }, false);
+        saveAuth(data.token, data.user);
+        window.location = '/';
+      } catch (err) {
+        showMsg(err.message, 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-user-plus"></i> ' + t('btn_register');
+      }
+    }
+    function showMsg(text, type) {
+      const m = document.getElementById('authMsg');
+      m.textContent = text; m.className = 'upload-msg ' + type; m.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

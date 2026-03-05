@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title data-i18n-title="login_title">Ingresar · Tribu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="/css/app.css"/>
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <i class="fas fa-seedling"></i>
+        <h2 data-i18n="login_title">Bienvenido a Tribu</h2>
+        <p data-i18n="login_sub">Iniciá sesión para compartir tu conocimiento</p>
+      </div>
+      <div id="authMsg" class="upload-msg" style="display:none"></div>
+      <form onsubmit="doLogin(event)">
+        <div class="form-group">
+          <label data-i18n="email_label">Email</label>
+          <input type="email" id="lEmail" required autocomplete="email" placeholder="tu@email.com"/>
+        </div>
+        <div class="form-group">
+          <label data-i18n="pass_label">Contraseña</label>
+          <input type="password" id="lPass" required autocomplete="current-password" placeholder="••••••"/>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="submitBtn">
+          <i class="fas fa-sign-in-alt"></i> <span data-i18n="btn_login">Ingresar</span>
+        </button>
+      </form>
+      <div class="auth-footer">
+        <span data-i18n="no_account">¿No tenés cuenta?</span>
+        <a href="/register" data-i18n="register_here">Registrate</a>
+      </div>
+      <div style="text-align:center;margin-top:14px">
+        <div class="lang-selector" style="display:inline-block">
+          <button class="lang-btn" onclick="toggleLangMenu()" style="border-color:var(--border);color:var(--text)">
+            <i class="fas fa-globe"></i> <span id="currentLang">ES</span>
+          </button>
+          <div class="lang-menu" id="langMenu">
+            <a onclick="setLang('es')">🇦🇷 Español</a><a onclick="setLang('en')">🇺🇸 English</a>
+            <a onclick="setLang('pt')">🇧🇷 Português</a><a onclick="setLang('de')">🇩🇪 Deutsch</a>
+            <a onclick="setLang('fr')">🇫🇷 Français</a><a onclick="setLang('it')">🇮🇹 Italiano</a>
+            <a onclick="setLang('nl')">🇳🇱 Nederlands</a><a onclick="setLang('ru')">🇷🇺 Русский</a>
+            <a onclick="setLang('ja')">🇯🇵 日本語</a><a onclick="setLang('pl')">🇵🇱 Polski</a>
+            <a onclick="setLang('uk')">🇺🇦 Українська</a><a onclick="setLang('sv')">🇸🇪 Svenska</a>
+            <a onclick="setLang('no')">🇳🇴 Norsk</a><a onclick="setLang('zh')">🇹🇼 繁體中文</a>
+            <a onclick="setLang('fi')">🇫🇮 Suomi</a><a onclick="setLang('af')">🇿🇦 Afrikaans</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/js/app.js"></script>
+  <script>
+    if (isLoggedIn()) window.location = '/';
+    async function doLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const email = document.getElementById('lEmail').value.trim();
+      const password = document.getElementById('lPass').value;
+      if (!email || !password) { showMsg(t('error_required'), 'error'); return; }
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      try {
+        const data = await api('POST', '/auth/login', { email, password }, false);
+        saveAuth(data.token, data.user);
+        window.location = '/';
+      } catch (err) {
+        showMsg(err.message, 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> ' + t('btn_login');
+      }
+    }
+    function showMsg(text, type) {
+      const m = document.getElementById('authMsg');
+      m.textContent = text; m.className = 'upload-msg ' + type; m.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
