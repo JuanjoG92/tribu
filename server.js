@@ -21,7 +21,7 @@ app.use('/api/auth',    require('./src/routes/auth'));
 app.use('/api/posts',   require('./src/routes/posts'));
 app.use('/api/webhook', require('./src/routes/webhook'));
 
-const PAGES = ['login', 'register', 'dashboard', 'post', 'new-post'];
+const PAGES = ['login', 'register', 'dashboard', 'post', 'new-post', 'community'];
 PAGES.forEach(p => {
   app.get('/' + p, (req, res) =>
     res.sendFile(path.join(__dirname, 'public', p + '.html'))

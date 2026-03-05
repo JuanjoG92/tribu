@@ -6,7 +6,7 @@ const { getDB } = require('../models/db');
 const { authMiddleware, optionalAuth } = require('../middleware/auth');
 const router = express.Router();
 
-const VALID_CATS = ['farming','gardening','preservation','building','hunting','tools','survival','adventures'];
+const VALID_CATS = ['farming','gardening','beekeeping','medicinal','preservation','building','hunting','tools','survival','adventures'];
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
